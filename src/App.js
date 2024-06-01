@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import CarsGroups from './components/CarsGroups/CarsGroups';
+import Footer from './components/Footer/Footer';
+import Navbar from './components/Navbar/Navbar';
+import SliderPage from './components/Slider/SliderPage';
+import CarDetailsForm from './components/CarDetailsForm/CarDetailsForm';
+import LoginPage from './components/Login/LoginPage';
+import RegisterPage from './components/RegisterPage/RegisterPage';
 
-function App() {
+// Assuming you have a DashboardPage component for authenticated users
+// import DashboardPage from './components/Dashboard/DashboardPage';
+
+import { DATA, DATA2 } from './data/Data';
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="main-page">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<SliderPage />} />
+          <Route path="/car-details" element={<CarDetailsForm />} />
+          <Route path="/LoginPage" element={<LoginPage />} />
+          <Route path="/RegisterPage" element={<RegisterPage />} />
+          {/* Add more routes as needed */}
+          {/* <Route path="/dashboard" element={<DashboardPage />} /> */}
+        </Routes>
+        <CarsGroups title="The most searched cars" data={DATA} />
+        <CarsGroups title="Latest Cars" data={DATA2} />
+        <Footer />
+      </div>
+    </Router>
   );
 }
-
-export default App;
