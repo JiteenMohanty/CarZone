@@ -1,15 +1,41 @@
+// src/components/RegisterPage/RegisterPage.js
+
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { auth, db } from '../../firebaseConfig';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { setDoc, doc } from 'firebase/firestore';
 import './RegisterPage.scss';
 
-export default function RegisterPage() {
+export default function RegisterPage({ setUser }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [name, setName] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Replace this alert with your registration logic
-        alert(`Email: ${email}\nPassword: ${password}\nConfirm Password: ${confirmPassword}`);
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            await setDoc(doc(db, 'users', user.uid), {
+                name,
+                email,
+            });
+            
+            // Automatically log in the user after registration
+            await signInWithEmailAndPassword(auth, email, password);
+            setUser({ name, email });
+            navigate('/'); // Redirect to the homepage
+        } catch (error) {
+            setError(error.message);
+        }
     };
 
     return (
@@ -17,6 +43,16 @@ export default function RegisterPage() {
             <div className="register-container">
                 <h2>Register</h2>
                 <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="name">Name:</label>
+                        <input
+                            type="text"
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                    </div>
                     <div className="form-group">
                         <label htmlFor="email">Email:</label>
                         <input
@@ -49,6 +85,7 @@ export default function RegisterPage() {
                     </div>
                     <button type="submit">Register</button>
                 </form>
+                {error && <p className="error">{error}</p>}
             </div>
         </div>
     );

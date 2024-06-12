@@ -1,15 +1,31 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { auth, db } from '../../firebaseConfig';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 import './LoginPage.scss';
 
-export default function LoginPage() {
+export default function LoginPage({ setUser }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Replace this alert with your login logic
-        alert(`Email: ${email}\nPassword: ${password}`);
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            const userDoc = await getDoc(doc(db, 'users', user.uid));
+            if (userDoc.exists()) {
+                setUser({ name: userDoc.data().name, email: user.email });
+                navigate('/'); // Redirect to the homepage or any other page
+            } else {
+                setError('User data not found');
+            }
+        } catch (error) {
+            setError(error.message);
+        }
     };
 
     return (
@@ -39,6 +55,7 @@ export default function LoginPage() {
                     </div>
                     <button type="submit">Login</button>
                 </form>
+                {error && <p className="error">{error}</p>}
                 <p className="register-link">
                     New user? <Link to="/RegisterPage">Register here</Link>
                 </p>

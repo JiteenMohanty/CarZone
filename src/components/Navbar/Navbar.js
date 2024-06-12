@@ -1,19 +1,29 @@
+// src/components/Navbar/Navbar.js
+
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebaseConfig';
 import SearchIcon from '@mui/icons-material/Search';
 import { ArrowDropDown, AccountCircle } from '@mui/icons-material';
 import './Navbar.scss';
-import logo from './logo-color.png'; // Adjust the path as needed
+import logo from './logo-color.png';
 
-export default function Navbar() {
-    const navigate = useNavigate(); // Initialize useNavigate
+export default function Navbar({ user, setUser }) {
+    const navigate = useNavigate();
 
     const handleLoginClick = () => {
-        navigate('/LoginPage'); // Navigate to the login page
+        navigate('/LoginPage');
+    };
+
+    const handleLogoutClick = async () => {
+        await signOut(auth);
+        setUser(null);
+        navigate('/');
     };
 
     const handleLogoClick = () => {
-        navigate('/'); // Navigate to the homepage
+        navigate('/');
     };
 
     return (
@@ -43,14 +53,25 @@ export default function Navbar() {
                             </div>
                         </div>
                         <div className="login-register">
-                            <button onClick={handleLoginClick}> {/* Add onClick handler */}
-                                <span>
-                                    <AccountCircle />
-                                </span>
-                                <p>
-                                    Login/Register
-                                </p>
-                            </button>
+                            {user ? (
+                                <button onClick={handleLogoutClick}>
+                                    <span>
+                                        <AccountCircle />
+                                    </span>
+                                    <p>
+                                        Logout
+                                    </p>
+                                </button>
+                            ) : (
+                                <button onClick={handleLoginClick}>
+                                    <span>
+                                        <AccountCircle />
+                                    </span>
+                                    <p>
+                                        Login/Register
+                                    </p>
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
