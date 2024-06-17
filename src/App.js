@@ -9,7 +9,7 @@ import SliderPage from './components/Slider/SliderPage';
 import CarDetailsForm from './components/CarDetailsForm/CarDetailsForm';
 import LoginPage from './components/Login/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
-import { DATA, DATA2 } from './data/Data';
+// import { DATA, DATA2 } from './data/Data';
 
 export default function App() {
     const [user, setUser] = useState(null);
@@ -25,9 +25,9 @@ export default function App() {
                     <Route path="/RegisterPage" element={<RegisterPage setUser={setUser} />} />
                     {/* Add more routes as needed */}
                 </Routes>
-                <CarsGroups title="The most searched cars" data={DATA} />
-                <CarsGroups title="Latest Cars" data={DATA2} />
-                <Footer />
+                {/* <CarsGroups title="The most searched cars" data={DATA} /> */}
+                {/* <CarsGroups title="Latest Cars" data={DATA2} /> */}
+                {/* <Footer /> */}
             </div>
         </Router>
     );

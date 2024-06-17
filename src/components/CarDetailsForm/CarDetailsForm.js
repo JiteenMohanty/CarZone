@@ -2,105 +2,84 @@ import React, { useState } from 'react';
 import './CarDetailsForm.scss';
 
 export default function CarDetailsForm() {
-    const [carDetails, setCarDetails] = useState({
-        Sales_ID: '',
-        Car_Brand: '',
-        Car_Model: '',
-        Car_Variant: '',
-        Year: '',
-        Selling_Price: '',
-        km_Driven: '',
-        Mileage: '',
-        Engine: '',
-        Max_Power: '',
-        Seats: '',
-        Fuel: '',
-        Transmission: '',
-        Owner: '',
-        Seller_Type: ''
+  const [carDetails, setCarDetails] = useState({
+    Name: '',
+    Year: '',
+    Kilometers_Driven: '',
+    Fuel_Type: '',
+    Transmission: '',
+    Owner_Type: '',
+    Mileage: '',
+    Engine: '',
+    Power: '',
+    Seats: '',
+  });
+
+  const [predictedPrice, setPredictedPrice] = useState(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCarDetails({ ...carDetails, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Send data to Flask API
+    const response = await fetch('/predict', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(carDetails),
     });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setCarDetails({ ...carDetails, [name]: value });
-    };
+    const data = await response.json();
+    setPredictedPrice(data.price);
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Handle form submission logic here
-        console.log(carDetails);
-    };
+  const formFields = [
+    { label: 'Car Name', name: 'Name', type: 'text', options: [] },
+    { label: 'Year', name: 'Year', type: 'number', options: [] },
+    { label: 'Kilometers Driven', name: 'Kilometers_Driven', type: 'number', options: [] },
+    { label: 'Fuel Type', name: 'Fuel_Type', type: 'select', options: ['Diesel', 'Petrol', 'CNG', 'LPG'] },
+    { label: 'Transmission', name: 'Transmission', type: 'select', options: ['Manual', 'Automatic'] },
+    { label: 'Owner Type', name: 'Owner_Type', type: 'select', options: ['First', 'Second', 'Third', 'Fourth & Above'] },
+    { label: 'Mileage (kmpl)', name: 'Mileage', type: 'number', options: [] },
+    { label: 'Engine (CC)', name: 'Engine', type: 'number', options: [] },
+    { label: 'Power (bhp)', name: 'Power', type: 'number', options: [] },
+    { label: 'Seats', name: 'Seats', type: 'number', options: [] },
+  ];
 
-    return (
-        <div className="car-details-form">
-            <h2>Enter Car Details</h2>
-            <form onSubmit={handleSubmit}>
-                {Object.keys(carDetails).map((key) => {
-                    if (['Seats', 'Fuel', 'Transmission', 'Owner', 'Seller_Type'].includes(key)) {
-                        return (
-                            <div key={key} className="form-group">
-                                <label htmlFor={key}>{key.replace('_', ' ')}:</label>
-                                <select name={key} value={carDetails[key]} onChange={handleChange} required>
-                                    {key === 'Seats' && (
-                                        <>
-                                            <option value="">Select Seats</option>
-                                            <option value="2">2 seater</option>
-                                            <option value="4">4 seater</option>
-                                            <option value="5">5 seater</option>
-                                            <option value="6">6 seater</option>
-                                            <option value="7">7 seater</option>
-                                        </>
-                                    )}
-                                    {key === 'Fuel' && (
-                                        <>
-                                            <option value="">Select Fuel Type</option>
-                                            <option value="petrol">Petrol</option>
-                                            <option value="diesel">Diesel</option>
-                                            <option value="CNG">CNG</option>
-                                            <option value="hybrid">Hybrid</option>
-                                        </>
-                                    )}
-                                    {key === 'Transmission' && (
-                                        <>
-                                            <option value="">Select Transmission</option>
-                                            <option value="automatic">Automatic</option>
-                                            <option value="manual">Manual</option>
-                                        </>
-                                    )}
-                                    {key === 'Owner' && (
-                                        <>
-                                            <option value="">Select Owner</option>
-                                            <option value="1st">1st</option>
-                                            <option value="2nd">2nd</option>
-                                        </>
-                                    )}
-                                    {key === 'Seller_Type' && (
-                                        <>
-                                            <option value="">Select Seller Type</option>
-                                            <option value="individual">Individual</option>
-                                            <option value="dealership">Dealership</option>
-                                        </>
-                                    )}
-                                </select>
-                            </div>
-                        );
-                    } else {
-                        return (
-                            <div key={key} className="form-group">
-                                <label htmlFor={key}>{key.replace('_', ' ')}:</label>
-                                <input
-                                    type="text"
-                                    name={key}
-                                    value={carDetails[key]}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-                        );
-                    }
-                })}
-                <button type="submit">Submit</button>
-            </form>
-        </div>
-    );
+  return (
+    <div className="car-details-form">
+      <h2>Enter Car Details</h2>
+      <form onSubmit={handleSubmit}>
+        {formFields.map((field) => (
+          <div key={field.name} className="form-group">
+            <label htmlFor={field.name}>{field.label}:</label>
+            {field.type === 'select' ? (
+              <select name={field.name} value={carDetails[field.name]} onChange={handleChange} required>
+                <option value="">Select {field.label}</option>
+                {field.options.map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type={field.type}
+                name={field.name}
+                value={carDetails[field.name]}
+                onChange={handleChange}
+                required
+              />
+            )}
+          </div>
+        ))}
+        <button type="submit">Submit</button>
+      </form>
+
+      {predictedPrice && <p>Predicted Price: Rs {predictedPrice.toLocaleString('en-IN')}</p>} 
+    </div>
+  );
 }
