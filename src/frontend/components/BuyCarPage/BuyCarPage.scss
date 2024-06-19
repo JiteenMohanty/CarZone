@@ -1,0 +1,145 @@
+/* BuyCarPage.scss */
+.buy-car-page {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f4f4f4; /* Light background color */
+    font-family: Arial, sans-serif; // Or your preferred font
+  
+    .filters {
+      width: 250px; /* Adjust filter section width as needed */
+      padding: 20px;
+      background-color: white; /* White background for filters */
+      border-right: 1px solid #e0e0e0; /* Light gray border */
+      overflow-y: auto; /* Enable vertical scrolling for long filter lists */
+  
+      h2 {
+        margin-bottom: 10px;
+        font-size: 18px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+  
+        &::after {
+          content: "-";
+          font-size: 24px;
+          margin-left: 10px;
+          cursor: pointer;
+        }
+      }
+  
+      .filter-section {
+        margin-bottom: 20px;
+        border-bottom: 1px solid #e0e0e0; /* Light gray border */
+        padding-bottom: 20px;
+  
+        .price-range-filter {
+          display: block;
+          margin-bottom: 15px;
+  
+          label {
+            display: block;
+            margin-bottom: 5px;
+          }
+  
+          input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding and border in width calculation */
+          }
+  
+          .budget-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 14px; /* Smaller font size for price labels */
+            color: #777;     /* Lighter text color for labels */
+          }
+        }
+  
+        .budget-options,
+        .transmission-options,
+        .brand-options {
+          label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            cursor: pointer; /* Indicate that labels are clickable */
+  
+            input[type="checkbox"] {
+              margin-right: 8px;
+              accent-color: #007bff; /* Customize checkbox accent color */
+            }
+          }
+        }
+  
+        .search-bar {
+          input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding and border in width calculation */
+          }
+        }
+  
+        /* Style for "Show More Brands" button */
+        .show-more-brands {
+          color: #007bff; /* Blue link color */
+          text-decoration: underline;
+          cursor: pointer;
+          margin-top: 10px;
+        }
+      }
+    }
+  
+    .car-list {
+      flex: 1;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+  
+      &.single-car-view {
+        display: block; /* Display details in a single column */
+        h2 {
+          margin-bottom: 20px;
+          font-size: 2em; /* Make the car name larger */
+        }
+        
+        /* Example image styling (adjust as needed) */
+        img {
+          max-width: 100%;
+          height: auto;
+          margin-bottom: 20px;
+        }
+  
+        .car-details {
+          p {
+            margin-bottom: 10px;
+          }
+  
+          strong {
+            font-weight: bold;
+          }
+  
+          button {
+            padding: 10px 20px;
+            background-color: #007bff; /* Example button color */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          }
+        }
+      }
+  
+      p { /* For "Loading...", "Error...", "No cars found" messages */
+        text-align: center;
+        margin-top: 20px;
+      }
+    }
+  }
+  
