@@ -1,47 +1,102 @@
+/* CarDetailsForm.scss */
+$primary-color: #B80424; 
+$secondary-color: #A70321;
+
 .car-details-form {
+  display: flex;          // Use flexbox for layout
+  flex-direction: column;  // Arrange elements vertically
+  width: 400px;           // Adjust width as needed
+  margin: 50px auto;       // Add top margin and center horizontally
+  padding: 30px 20px;     // Padding: top/bottom 30px, left/right 20px
+  border: 1px solid #ccc; // Light gray border
+  border-radius: 8px;
+  background-color: #f9f9f9;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 50px;
-    padding-bottom: 50px;
+    flex-direction: column; // Stack label and input vertically
 
-    h2 {
-        margin-bottom: 20px;
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+  }
+
+  input, select {
+    width: 100%;
+    padding: 10px;     
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;   // Make input/select text larger
+  }
+
+  select { // Styling for select (dropdown) elements
+    appearance: none; // Remove default browser styling
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* Add a custom arrow icon */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23888'%3e%3cpath d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z'/%3e%3c/svg%3e"); 
+    background-repeat: no-repeat;
+    background-position: right 10px center; // Adjust position as needed
+    padding-right: 30px; // Add space for the arrow
+
+    &:hover {
+      border-color: $primary-color;
     }
 
-    form {
-        width: 50%;
-        display: flex;
-        flex-direction: column;
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 15px;
-
-            label {
-                margin-bottom: 5px;
-            }
-
-            input, select {
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-        }
-
-        button {
-            padding: 10px;
-            background-color: #B80424;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-
-            &:hover {
-                background-color: #a70320;
-            }
-        }
+    &:focus {
+      outline: none; // Remove default focus outline
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2); // Add a subtle focus ring
     }
+  }
+
+  button {  // Styling for the buttons
+    background-color: $primary-color; // Use custom color
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+    display: block; 
+    margin: 0 auto; 
+
+    &:hover {
+      background-color: $secondary-color; // Use custom hover color
+    }
+
+    &:disabled {
+      background-color: #ddd;
+      color: #666;
+      cursor: not-allowed;
+    }
+  }
+
+  .error { // Styling for error messages
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: center;
+  }
+
+  // Styling for the predicted price display
+  .predicted-price {
+    font-size: 24px;
+    font-weight: bold;
+    color: black; // Using the primary color defined above
+    text-align: center;
+    margin-top: 20px;
+  }
 }
+

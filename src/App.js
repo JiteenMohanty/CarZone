@@ -19,8 +19,8 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<SliderPage />} />
                     <Route path="/car-details" element={<CarDetailsForm />} />
-                    <Route path="/login" element={<LoginPage setUser={setUser} />} /> 
-                    <Route path="/register" element={<RegisterPage setUser={setUser} />} />
+                    <Route path="/LoginPage" element={<LoginPage setUser={setUser} />} /> 
+                    <Route path="/RegisterPage" element={<RegisterPage setUser={setUser} />} />
                     <Route path="/buy-car" element={<BuyCarPage user={user} />} /> 
                 </Routes>
                 {/* <Footer /> */} 

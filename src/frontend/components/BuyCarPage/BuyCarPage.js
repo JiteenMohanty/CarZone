@@ -18,45 +18,34 @@ function BuyCarPage({ user }) {
     bodyType: '',
     transmission: ''
   });
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const [popularBrands] = useState([
     'Maruti Suzuki', 'Hyundai', 'Tata', 'Mahindra', 'Kia', 'Toyota',
-    // ... Add more popular brands here
   ]);
 
   useEffect(() => {
-    if (carId) {
-      fetchCarDetails(carId);
-    } else {
-      fetchCars();
+    // Fetch all cars when the component mounts or filters change
+    fetchCars();
+  }, [filters]); // Dependency array includes filters to re-fetch when filters change
+
+  const fetchCars = async () => {
+    try {
+      setIsLoading(true);
+      const queryParams = new URLSearchParams(filters).toString(); // Construct query string from filters
+      const response = await fetch(`/api/cars?${queryParams}`); // Fetch cars from your backend API
+      if (!response.ok) throw new Error('Error fetching cars');
+      const data = await response.json();
+      setCars(data);
+      setError(null);
+    } catch (error) {
+      console.error(error);
+      setError(error.message || 'An error occurred while fetching cars');
+    } finally {
+      setIsLoading(false);
     }
-  }, [carId]); 
-
-  const fetchCars = () => {
-    setIsLoading(true);
-    const queryParams = new URLSearchParams(filters).toString();
-    fetch(`/api/cars?${queryParams}`) 
-      .then(response => response.json())
-      .then(data => {
-        setCars(data);
-        setError(null); 
-      })
-      .catch(error => setError(error))
-      .finally(() => setIsLoading(false));
-  };
-
-  const fetchCarDetails = (carId) => {
-    setIsLoading(true);
-    fetch(`/api/cars/${carId}`)
-      .then(response => response.json())
-      .then(data => {
-        setCarDetails(data);
-        setError(null);
-      })
-      .catch(error => setError(error))
-      .finally(() => setIsLoading(false));
   };
 
   const handleFilterChange = (event) => {
@@ -79,7 +68,6 @@ function BuyCarPage({ user }) {
   };
 
   const handlePurchase = () => {
-    // ... your purchase logic ...
     navigate(`/checkout/${carId}`); 
   };
 
@@ -135,30 +123,16 @@ function BuyCarPage({ user }) {
           </div>
         </div>
 
-        {/* Other Filters (Year, Fuel Type, etc.) */}
-        {/* ... Add your other filter sections here ... */}
       </div>
 
       <div className="car-list">
-        {isLoading ? (
-          <p>Loading cars...</p>
-        ) : error ? (
-          <p>Error fetching cars: {error.message}</p>
-        ) : cars.length > 0 ? (
-          cars.map(car => (
-            <CarCard key={car.id} car={car} onPurchase={handlePurchase} /> // Pass handlePurchase
-          ))
-        ) : carDetails ? (
-          // Render single car view 
-          <div>
-            <h2>{carDetails.name}</h2>
-            {/* ... display other car details (price, description, etc.) */}
-            {/* Pass the carDetails to the onPurchase function */}
-            <button onClick={() => handlePurchase(carDetails)}>Buy Now</button> 
-          </div>
-        ) : (
-          <p>No cars match your filters.</p>
-        )}
+        {isLoading && <p>Loading cars...</p>}
+        {error && <p>Error fetching cars: {error.message}</p>}
+        {!isLoading && !error && cars.map((car) => (
+          <CarCard key={car.id} car={car} onPurchase={() => { /* Handle purchase here */ }} />
+        ))}
+        {/* Optionally, display a message if no cars match the filters */}
+        {!isLoading && !error && cars.length === 0 && <p>No cars match your filters.</p>}
       </div>
     </div>
   );
