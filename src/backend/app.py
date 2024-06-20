@@ -41,11 +41,11 @@ def predict():
             data['Fuel_Type'],
             data['Transmission'],
             data['Owner_Type'],
+            data['Seats'],
+            data['Company'],
             data['Mileage'],
             data['Engine'],
-            data['Power'],
-            data['Seats'],
-            data['Company']
+            data['Power']
         ]])
 
         # Log input data for debugging

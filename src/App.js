@@ -20,8 +20,7 @@ export default function App() {
                     <Route path="/LoginPage" element={<LoginPage setUser={setUser} />} /> 
                     <Route path="/RegisterPage" element={<RegisterPage setUser={setUser} />} />
                     <Route path="/buy-car" element={<BuyCarPage user={user} />} /> 
-                </Routes>
-                {/* <Footer /> */} 
+                </Routes> 
             </div>
         </Router>
     );

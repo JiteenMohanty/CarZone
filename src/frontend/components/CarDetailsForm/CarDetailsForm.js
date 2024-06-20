@@ -153,7 +153,7 @@ export default function CarDetailsForm() {
       )}
       
       {predictedPrice && (
-        <button onClick={handleSell}>Sell Now</button>
+        <button onClick={handleSell}>Book an Inspection</button>
       )}
     </div>
   );
