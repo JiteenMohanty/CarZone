@@ -114,7 +114,7 @@ export default function CarDetailsForm() {
 
   return (
     <div className="car-details-form">
-      <h2>Enter Car Details</h2>
+      <h2>ENTER CAR DETAILS</h2>
       <form onSubmit={handleSubmit}>
         {formFields.map((field) => (
           <div key={field.name} className="form-group">
@@ -140,25 +140,18 @@ export default function CarDetailsForm() {
             )}
           </div>
         ))}
-        {/* <datalist id="car-names">
-          {carNameOptions.map((option) => (
-            <option key={option} value={option} />
-          ))}
-        </datalist> */}
         <button type="submit" disabled={isLoading}>
           {isLoading ? 'Predicting...' : 'Submit'}
         </button>
       </form>
 
       {error && <p className="error">{error}</p>}
-      {/* Price display with styling */}
       {predictedPrice && (
         <div className="predicted-price">
           Predicted Price: Rs {predictedPrice.toLocaleString('en-IN')} Lacs
         </div>
       )}
-
-      {/* Conditionally render the "Sell Now" button */}
+      
       {predictedPrice && (
         <button onClick={handleSell}>Sell Now</button>
       )}
