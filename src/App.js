@@ -6,8 +6,6 @@ import CarDetailsForm from './frontend/components/CarDetailsForm/CarDetailsForm'
 import LoginPage from './frontend/components/Login/LoginPage';
 import RegisterPage from './frontend/components/RegisterPage/RegisterPage';
 import BuyCarPage from './frontend/components/BuyCarPage/BuyCarPage';
-// Import the new BuyCarPage component 
- // Adjust the path if needed
 
 export default function App() {
     const [user, setUser] = useState(null);
